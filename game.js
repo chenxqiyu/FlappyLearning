@@ -202,6 +202,7 @@ class Game {
 					this.birds[i].y / this.height,
 					nextHoll
 				];
+				console.log("this.birds[i].y:" + this.birds[i].y)
 				//神经计算输入
 				var res = this.gen[i].compute(inputs);
 				//神经计算输出
