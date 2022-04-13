@@ -166,7 +166,7 @@ class Game {
 
 		//神经网络-下一代
 		this.gen = Neuvol.nextGeneration();
-		
+
 		for (var i in this.gen) {
 			var b = new Bird();
 			this.birds.push(b)
@@ -175,10 +175,16 @@ class Game {
 		this.alives = this.birds.length;
 	}
 	update() {
+		//移动背景
 		this.backgroundx += this.backgroundSpeed;
+		/**下一个霍尔 */
 		var nextHoll = 0;
+
+		//如果鸟的数量大于0
 		if (this.birds.length > 0) {
+			//遍历管道数组
 			for (var i = 0; i < this.pipes.length; i += 2) {
+				//如果鸟在一个管道的左边
 				if (this.pipes[i].x + this.pipes[i].width > this.birds[0].x) {
 					nextHoll = this.pipes[i].height / this.height;
 					break;
@@ -186,26 +192,32 @@ class Game {
 			}
 		}
 
+		//遍历鸟数组
 		for (var i in this.birds) {
+			//如果该鸟还活着
 			if (this.birds[i].alive) {
 
+				//初始化输入值
 				var inputs = [
 					this.birds[i].y / this.height,
 					nextHoll
 				];
-
+				//神经计算输入
 				var res = this.gen[i].compute(inputs);
+				//神经计算输出
 				if (res > 0.5) {
 					this.birds[i].flap();
 				}
-
+				//鸟更新
 				this.birds[i].update();
+				//如果鸟碰撞管道
 				if (this.birds[i].isDead(this.height, this.pipes)) {
 					this.birds[i].alive = false;
 					this.alives--;
 					//console.log(this.alives);
-					//神经网络-分
+					//神经网络-得分
 					Neuvol.networkScore(this.gen[i], this.score);
+					//鸟数量为0重置游戏
 					if (this.isItEnd()) {
 						this.start();
 					}
