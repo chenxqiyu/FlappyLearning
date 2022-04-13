@@ -296,11 +296,11 @@ class Game {
 
 		this.ctx.fillStyle = "white";
 		this.ctx.font = "20px Oswald, sans-serif";
-		this.ctx.fillText("Score : " + this.score, 10, 25);
-		this.ctx.fillText("Max Score : " + this.maxScore, 10, 50);
-		this.ctx.fillText("Generation : " + this.generation, 10, 75);
+		this.ctx.fillText("得分 : " + this.score, 10, 25);
+		this.ctx.fillText("最高分数 : " + this.maxScore, 10, 50);
+		this.ctx.fillText("代数 : " + this.generation, 10, 75);
 		//神经网络-显示神经网络人口
-		this.ctx.fillText("Alive : " + this.alives + " / " + Neuvol.options.population, 10, 100);
+		this.ctx.fillText("存活数 : " + this.alives + " / " + Neuvol.options.population, 10, 100);
 
 		var self = this;
 		requestAnimationFrame(function () {
