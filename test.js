@@ -1,10 +1,4 @@
-window.onload = function () {
 
-    var c = new client()
-    c.start()
-
-
-}
 
 var client = () => {
     this.x = 0
@@ -13,4 +7,12 @@ var client = () => {
 }
 client.prototype.start = () => {
     console.log("start")
+}
+
+window.onload = function () {
+
+    var c = new client()
+    c.start()
+
+
 }
