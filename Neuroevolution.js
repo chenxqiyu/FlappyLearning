@@ -1,19 +1,20 @@
 /**
+ * 提供一组类和方法来处理神经进化和遗传算法
  * Provides a set of classes and methods for handling Neuroevolution and
  * genetic algorithms.
  *
  * @param {options} An object of options for Neuroevolution.
  */
 var Neuroevolution = function (options) {
-	var self = this; // reference to the top scope of this module
+	var self = this; //参考此模块的顶部作用域reference to the top scope of this module
 
-	// Declaration of module parameters (options) and default values
+	// 模块参数(选项)和默认值的声明Declaration of module parameters (options) and default values
 	self.options = {
 		/**
-		 * Logistic activation function.
+		 * 物流的激活函数Logistic activation function.
 		 *
 		 * @param {a} Input value.
-		 * @return Logistic function output.
+		 * @return 逻辑函数的输出Logistic function output.
 		 */
 		activation: function (a) {
 			ap = (-a) / 1;
@@ -21,54 +22,54 @@ var Neuroevolution = function (options) {
 		},
 
 		/**
-		 * Returns a random value between -1 and 1.
+		 * 返回-1到1之间的随机值Returns a random value between -1 and 1.
 		 *
-		 * @return Random value.
+		 * @return 随机值Random value.
 		 */
 		randomClamped: function () {
 			return Math.random() * 2 - 1;
 		},
 
-		// various factors and parameters (along with default values).
+		//各种因素和参数(以及默认值)。 various factors and parameters (along with default values).
 		network: [1, [1], 1], // Perceptron network structure (1 hidden
 		// layer).
-		population: 50, // Population by generation.
-		elitism: 0.2, // Best networks kepts unchanged for the next
+		population: 50, //人口的一代 Population by generation.
+		elitism: 0.2, //最好的网络保持不变 Best networks kepts unchanged for the next
 		// generation (rate).
-		randomBehaviour: 0.2, // New random networks for the next generation
+		randomBehaviour: 0.2, //下一代新的随机网络 New random networks for the next generation
 		// (rate).
-		mutationRate: 0.1, // Mutation rate on the weights of synapses.
-		mutationRange: 0.5, // Interval of the mutation changes on the
+		mutationRate: 0.1, //突触权值的突变率。 Mutation rate on the weights of synapses.
+		mutationRange: 0.5, //突变的间隔在突触的重量 Interval of the mutation changes on the
 		// synapse weight.
-		historic: 0, // Latest generations saved.
-		lowHistoric: false, // Only save score (not the network).
-		scoreSort: -1, // Sort order (-1 = desc, 1 = asc).
-		nbChild: 1 // Number of children by breeding.
+		historic: 0, //最新一代保存 Latest generations saved.
+		lowHistoric: false, //只保存分数(不是网络) Only save score (not the network).
+		scoreSort: -1, //排序 Sort order (-1 = desc, 1 = asc).
+		nbChild: 1 //生育的孩子数量。 Number of children by breeding.
 
 	}
 
 	/**
-	 * Override default options.
+	 * 覆盖默认选项Override default options.
 	 *
-	 * @param {options} An object of Neuroevolution options.
+	 * @param {options} 是神经进化选择的对象An object of Neuroevolution options.
 	 * @return void
 	 */
 	self.set = function (options) {
 		for (var i in options) {
-			if (this.options[i] != undefined) { // Only override if the passed in value
+			if (this.options[i] != undefined) { //只有在传入值时才重写是实际定义的。 Only override if the passed in value
 				// is actually defined.
 				self.options[i] = options[i];
 			}
 		}
 	}
 
-	// Overriding default options with the pass in options
+	//用传入选项覆盖默认选项 Overriding default options with the pass in options
 	self.set(options);
 
 
 	/*NEURON**********************************************************************/
 	/**
-	 * Artificial Neuron class
+	 * 人工神经元类Artificial Neuron class
 	 *
 	 * @constructor
 	 */
@@ -78,9 +79,9 @@ var Neuroevolution = function (options) {
 	}
 
 	/**
-	 * Initialize number of neuron weights to random clamped values.
+	 * 将神经元权值的数目初始化为随机箝位值。Initialize number of neuron weights to random clamped values.
 	 *
-	 * @param {nb} Number of neuron weights (number of inputs).
+	 * @param {nb} 神经元权重数(输入数)Number of neuron weights (number of inputs).
 	 * @return void
 	 */
 	Neuron.prototype.populate = function (nb) {
@@ -93,10 +94,10 @@ var Neuroevolution = function (options) {
 
 	/*LAYER***********************************************************************/
 	/**
-	 * Neural Network Layer class.
+	 * 神经网络层类Neural Network Layer class.
 	 *
 	 * @constructor
-	 * @param {index} Index of this Layer in the Network.
+	 * @param {index} 该层在网络中的索引。Index of this Layer in the Network.
 	 */
 	var Layer = function (index) {
 		this.id = index || 0;
@@ -104,9 +105,9 @@ var Neuroevolution = function (options) {
 	}
 
 	/**
-	 * Populate the Layer with a set of randomly weighted Neurons.
+	 * 用一组随机加权的神经元填充层Populate the Layer with a set of randomly weighted Neurons.
 	 *
-	 * Each Neuron be initialied with nbInputs inputs with a random clamped
+	 * 每个神经元都用nbInputs输入进行初始化，并随机箝位值Each Neuron be initialied with nbInputs inputs with a random clamped
 	 * value.
 	 *
 	 * @param {nbNeurons} Number of neurons.
@@ -125,9 +126,9 @@ var Neuroevolution = function (options) {
 
 	/*NEURAL NETWORK**************************************************************/
 	/**
-	 * Neural Network class
+	 * 多类神经网络机Neural Network class
 	 *
-	 * Composed of Neuron Layers.
+	 * 由神经元层组成Composed of Neuron Layers.
 	 *
 	 * @constructor
 	 */
@@ -136,7 +137,7 @@ var Neuroevolution = function (options) {
 	}
 
 	/**
-	 * Generate the Network layers.
+	 * 生成网络层Generate the Network layers.
 	 *
 	 * @param {input} Number of Neurons in Input layer.
 	 * @param {hidden} Number of Neurons per Hidden layer.
@@ -147,13 +148,12 @@ var Neuroevolution = function (options) {
 		var index = 0;
 		var previousNeurons = 0;
 		var layer = new Layer(index);
-		layer.populate(input, previousNeurons); // Number of Inputs will be set to
-		// 0 since it is an input layer.
-		previousNeurons = input; // number of input is size of previous layer.
+		layer.populate(input, previousNeurons); //输入的数量将被设置为0，因为它是一个输入层。 Number of Inputs will be set to 0 since it is an input layer.
+		previousNeurons = input; //输入的数量是前一层的大小。 number of input is size of previous layer.
 		this.layers.push(layer);
 		index++;
 		for (var i in hiddens) {
-			// Repeat same process as first layer for each hidden layer.
+			//对每个隐藏层重复第一层相同的过程。 Repeat same process as first layer for each hidden layer.
 			var layer = new Layer(index);
 			layer.populate(hiddens[i], previousNeurons);
 			previousNeurons = hiddens[i];
@@ -161,31 +161,28 @@ var Neuroevolution = function (options) {
 			index++;
 		}
 		var layer = new Layer(index);
-		layer.populate(output, previousNeurons); // Number of input is equal to
-		// the size of the last hidden
-		// layer.
+		layer.populate(output, previousNeurons); //输入的数量等于最后一个隐藏层的大小 Number of input is equal to the size of the last hidden layer.
 		this.layers.push(layer);
 	}
 
 	/**
-	 * Create a copy of the Network (neurons and weights).
+	 * 创建网络的副本(神经元和权重)Create a copy of the Network (neurons and weights).
 	 *
-	 * Returns number of neurons per layer and a flat array of all weights.
+	 * 返回每层神经元的数量和所有权重的平面数组。Returns number of neurons per layer and a flat array of all weights.
 	 *
-	 * @return Network data.
+	 * @return 网络数据Network data.
 	 */
 	Network.prototype.getSave = function () {
 		var datas = {
-			neurons: [], // Number of Neurons per layer.
-			weights: [] // Weights of each Neuron's inputs.
+			neurons: [], //每层神经元的数目 Number of Neurons per layer.
+			weights: [] //每个神经元输入的权重 Weights of each Neuron's inputs.
 		};
 
 		for (var i in this.layers) {
 			datas.neurons.push(this.layers[i].neurons.length);
 			for (var j in this.layers[i].neurons) {
 				for (var k in this.layers[i].neurons[j].weights) {
-					// push all input weights of each Neuron of each Layer into a flat
-					// array.
+					//将每一层每个神经元的所有输入权重推入一个平面阵列。 push all input weights of each Neuron of each Layer into a flat array.
 					datas.weights.push(this.layers[i].neurons[j].weights[k]);
 				}
 			}
@@ -194,9 +191,9 @@ var Neuroevolution = function (options) {
 	}
 
 	/**
-	 * Apply network data (neurons and weights).
+	 * 应用网络数据(神经元和权重)。Apply network data (neurons and weights).
 	 *
-	 * @param {save} Copy of network data (neurons and weights).
+	 * @param {save} 网络数据的拷贝(神经元和权重)Copy of network data (neurons and weights).
 	 * @return void
 	 */
 	Network.prototype.setSave = function (save) {
@@ -205,15 +202,15 @@ var Neuroevolution = function (options) {
 		var indexWeights = 0;
 		this.layers = [];
 		for (var i in save.neurons) {
-			// Create and populate layers.
+			//创建和填充层。 Create and populate layers.
 			var layer = new Layer(index);
 			layer.populate(save.neurons[i], previousNeurons);
 			for (var j in layer.neurons) {
 				for (var k in layer.neurons[j].weights) {
-					// Apply neurons weights to each Neuron.
+					//对每个Neuron应用神经元权重。 Apply neurons weights to each Neuron.
 					layer.neurons[j].weights[k] = save.weights[indexWeights];
 
-					indexWeights++; // Increment index of flat array.
+					indexWeights++; //平面数组的增量索引 Increment index of flat array.
 				}
 			}
 			previousNeurons = save.neurons[i];
@@ -223,38 +220,37 @@ var Neuroevolution = function (options) {
 	}
 
 	/**
-	 * Compute the output of an input.
+	 * 计算输入的输出。Compute the output of an input.
 	 *
-	 * @param {inputs} Set of inputs.
-	 * @return Network output.
+	 * @param {inputs} 组输入Set of inputs.
+	 * @return 网络输出Network output.
 	 */
 	Network.prototype.compute = function (inputs) {
-		// Set the value of each Neuron in the input layer.
+		//设置输入层中每个神经元的值 Set the value of each Neuron in the input layer.
 		for (var i in inputs) {
 			if (this.layers[0] && this.layers[0].neurons[i]) {
 				this.layers[0].neurons[i].value = inputs[i];
 			}
 		}
 
-		var prevLayer = this.layers[0]; // Previous layer is input layer.
+		var prevLayer = this.layers[0]; //上一层是输入层。 Previous layer is input layer.
 		for (var i = 1; i < this.layers.length; i++) {
 			for (var j in this.layers[i].neurons) {
-				// For each Neuron in each layer.
+				//对于每一层中的每一个神经元 For each Neuron in each layer.
 				var sum = 0;
 				for (var k in prevLayer.neurons) {
-					// Every Neuron in the previous layer is an input to each Neuron in
-					// the next layer.
+					//上一层的每个神经元都是下一层每个神经元的输入 Every Neuron in the previous layer is an input to each Neuron in the next layer.
 					sum += prevLayer.neurons[k].value *
 						this.layers[i].neurons[j].weights[k];
 				}
 
-				// Compute the activation of the Neuron.
+				//计算神经元的激活。 Compute the activation of the Neuron.
 				this.layers[i].neurons[j].value = self.options.activation(sum);
 			}
 			prevLayer = this.layers[i];
 		}
 
-		// All outputs of the Network.
+		//网络的所有输出。 All outputs of the Network.
 		var out = [];
 		var lastLayer = this.layers[this.layers.length - 1];
 		for (var i in lastLayer.neurons) {
