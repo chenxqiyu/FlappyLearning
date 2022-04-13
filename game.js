@@ -1,3 +1,4 @@
+//https://chenxqiyu.github.io/FlappyLearning/
 (function () {
 	var timeouts = [];
 	var messageName = "zero-timeout-message";
@@ -312,3 +313,4 @@ window.onload = function () {
 	})
 
 }
+//https://chenxqiyu.github.io/FlappyLearning/
