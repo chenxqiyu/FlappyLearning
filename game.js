@@ -128,20 +128,34 @@ class Pipe {
 //游戏类
 class Game {
 	constructor() {
+		/** 管道数组 */
 		this.pipes = [];
+		/** 鸟数组 */
 		this.birds = [];
+		/**分数 */
 		this.score = 0;
+		/**画布节点 */
 		this.canvas = document.querySelector("#flappy");
+		/**画布对象 */
 		this.ctx = this.canvas.getContext("2d");
+		/**宽度 */
 		this.width = this.canvas.width;
+		/**高度 */
 		this.height = this.canvas.height;
+		/**产卵时间间隔 */
 		this.spawnInterval = 90;
+		/**间隔 */
 		this.interval = 0;
+		/**下一代数组 */
 		this.gen = [];
+		/**鸟的存活数量 */
 		this.alives = 0;
+		/**代数统计 */
 		this.generation = 0;
+		/**背景移动速度 */
 		this.backgroundSpeed = 0.5;
 		this.backgroundx = 0;
+		/**最大分数 */
 		this.maxScore = 0;
 	}
 	start() {
@@ -152,6 +166,7 @@ class Game {
 
 		//神经网络-下一代
 		this.gen = Neuvol.nextGeneration();
+		
 		for (var i in this.gen) {
 			var b = new Bird();
 			this.birds.push(b)
