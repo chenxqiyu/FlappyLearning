@@ -159,6 +159,7 @@ class Game {
 		this.maxScore = 0;
 	}
 	start() {
+		//初始化变量
 		this.interval = 0;
 		this.score = 0;
 		this.pipes = [];
@@ -186,6 +187,8 @@ class Game {
 			for (var i = 0; i < this.pipes.length; i += 2) {
 				//如果鸟在一个管道的左边
 				if (this.pipes[i].x + this.pipes[i].width > this.birds[0].x) {
+
+
 					nextHoll = this.pipes[i].height / this.height;
 					break;
 				}
@@ -199,8 +202,8 @@ class Game {
 
 				//初始化输入值
 				var inputs = [
-					this.birds[i].y / this.height,
-					nextHoll
+					this.birds[i].y / this.height,//鸟的y/屏幕高度
+					nextHoll //管道高度/屏幕高度
 				];
 				console.log("this.birds[i].y:" + this.birds[i].y)
 				//神经计算输入
@@ -226,6 +229,7 @@ class Game {
 			}
 		}
 
+		//遍历管道数组
 		for (var i = 0; i < this.pipes.length; i++) {
 			this.pipes[i].update();
 			if (this.pipes[i].isOut()) {
@@ -234,19 +238,24 @@ class Game {
 			}
 		}
 
+		//生成管道
 		if (this.interval == 0) {
 			var deltaBord = 50;
 			var pipeHoll = 120;
+
+			//开口大小
 			var hollPosition = Math.round(Math.random() * (this.height - deltaBord * 2 - pipeHoll)) + deltaBord;
 			this.pipes.push(new Pipe({ x: this.width, y: 0, height: hollPosition }));
 			this.pipes.push(new Pipe({ x: this.width, y: hollPosition + pipeHoll, height: this.height }));
 		}
 
+		//重新生成管道
 		this.interval++;
 		if (this.interval == this.spawnInterval) {
 			this.interval = 0;
 		}
 
+		//分数统计
 		this.score++;
 		this.maxScore = (this.score > this.maxScore) ? this.score : this.maxScore;
 		var self = this;
@@ -262,6 +271,7 @@ class Game {
 		}
 	}
 	isItEnd() {
+		//**判断鸟是否还有存活 */
 		for (var i in this.birds) {
 			if (this.birds[i].alive) {
 				return false;
@@ -270,11 +280,13 @@ class Game {
 		return true;
 	}
 	display() {
+		//清除背景
 		this.ctx.clearRect(0, 0, this.width, this.height);
+		//画背景
 		for (var i = 0; i < Math.ceil(this.width / images.background.width) + 1; i++) {
 			this.ctx.drawImage(images.background, i * images.background.width - Math.floor(this.backgroundx % images.background.width), 0)
 		}
-
+		//画管道
 		for (var i in this.pipes) {
 			if (i % 2 == 0) {
 				this.ctx.drawImage(images.pipetop, this.pipes[i].x, this.pipes[i].y + this.pipes[i].height - images.pipetop.height, this.pipes[i].width, images.pipetop.height);
@@ -282,7 +294,7 @@ class Game {
 				this.ctx.drawImage(images.pipebottom, this.pipes[i].x, this.pipes[i].y, this.pipes[i].width, images.pipetop.height);
 			}
 		}
-
+		//画鸟
 		this.ctx.fillStyle = "#FFC600";
 		this.ctx.strokeStyle = "#CE9E00";
 		for (var i in this.birds) {
@@ -294,7 +306,7 @@ class Game {
 				this.ctx.restore();
 			}
 		}
-
+		//画分数
 		this.ctx.fillStyle = "white";
 		this.ctx.font = "20px Oswald, sans-serif";
 		this.ctx.fillText("得分 : " + this.score, 10, 25);
@@ -304,6 +316,11 @@ class Game {
 		this.ctx.fillText("存活数 : " + this.alives + " / " + Neuvol.options.population, 10, 100);
 
 		var self = this;
+		/*** 
+requestAnimationFrame 比起 setTimeout、setInterval的优势主要有两点：
+1、requestAnimationFrame 会把每一帧中的所有DOM操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+2、在隐藏或不可见的元素中，requestAnimationFrame将不会进行重绘或回流，这当然就意味着更少的的cpu，gpu和内存使用量。
+		 */
 		requestAnimationFrame(function () {
 			self.display();
 		});

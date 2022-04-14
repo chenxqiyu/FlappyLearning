@@ -100,12 +100,11 @@ window.onload = function () {
     }, 1000)
 
 
-    //输入
-    //输出
-    //>0.5移动
+    //输入 对象的y/屏幕高度 障碍物高度/屏幕高度
+    //输出 >0.5 flag移动对象的y
 
-    //满足条件得分
-    //  networkScore(this.gen[i], this.score);
+    //对象y碰撞到障碍物条件得分
+    //networkScore(this.gen[i], this.score);
 
     //如果对象组为0重置
 
