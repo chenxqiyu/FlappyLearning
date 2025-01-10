@@ -23,7 +23,7 @@
 	window.setZeroTimeout = setZeroTimeout;
 })();
 
-//神经网络-声明
+//神经网络-声明123
 var Neuvol;
 var game;
 var FPS = 60;
